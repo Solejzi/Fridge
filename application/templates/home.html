@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>THE FRIDGE</h1>
+        <form method="POST"  action="{{ url_for('fridgeView') }}">
+            <fieldset>
+                <legend>LOGIN TO YOUR FRIDGE</legend>
+                <div>
+                    {{ form.e_mail.label() }}
+                    {{ form.e_mail }}
+                </div>
+                <div>
+                    {{ form.password.label() }}
+                    {{ form.password }}
+                </div>
+                <div>
+                    {{ form.remember.label() }}
+                    {{ form.remember }}
+                </div>
+
+            </fieldset>
+            <div>
+                {{ form.submit }}
+            </div>
+        </form>
+
+
+</body>
+</html>
