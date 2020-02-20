@@ -16,7 +16,7 @@ class Fridge(db.Model):
     name = db.Column(db.String)
     user = db.relationship('User', back_populates='fridge')
     in_fridge = db.relationship('InFridge', back_populates='fridge')
-    openedItem = db.relationship('OpenItem', back_populates='fridge')
+
 
 
 class InFridge(db.Model):
@@ -26,12 +26,13 @@ class InFridge(db.Model):
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
     quantity = db.Column(db.Integer)
     expired_date = db.Column(db.DateTime)
-    item = db.relationship('Item', back_populates='inFridge')
+    items = db.relationship('Items', back_populates='inFridge')
     fridge = db.relationship('Fridge', back_populates='inFridge')
     openedItem = db.relationship('OpenItem', back_populates='inFridge')
 
 
 class Items(db.Model):
+
     __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
@@ -40,6 +41,7 @@ class Items(db.Model):
     category = db.Column(db.Integer, db.ForeignKey('itemsCategories.id'))
     itemCategories = db.relationship('ItemCategories', back_populates='items')
     openedItem = db.relationship('OpenedItem', back_populates='items')
+    in_fridge = db.relationship('InFridge', back_populates='items')
 
 
 class OpenedItem(db.Model):
@@ -49,7 +51,7 @@ class OpenedItem(db.Model):
     item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
     when = db.Column(db.DateTime)
     item = db.relationship('Item', back_populates='openedItem')
-    fridge = db.relationship('InFridge', back_populates='openedItem')
+    in_fridge = db.relationship('InFridge', back_populates='openedItem')
 
 
 class ItemsCategories(db.Model):

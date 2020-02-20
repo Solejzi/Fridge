@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>WELCOME</title>
 </head>
 <body>
-    <h1>THE FRIDGE</h1>
-        <form method="POST"  action="{{ url_for('fridge_view') }}">
+<h1>WELCOME</h1>
+<div>
+    <h3> Login </h3>
+   <form method="POST"  action="{{ url_for('fridge_view') }}">
             <fieldset>
                 <legend>LOGIN TO YOUR FRIDGE</legend>
                 <div>
@@ -30,7 +32,11 @@
                 {{ form.submit }}
             </div>
         </form>
-
+</div>
+<div>
+    <h3> Register </h3>
+     <a href="{{ url_for('register_view') }}"><button type="button">Register new FRIDGE</button></a>
+</div>
 
 </body>
 </html>

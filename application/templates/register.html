@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+    <form method="POST"  action="{{ url_for('welcome_view') }}">
+        <fieldset>
+            <legend>REGISTER</legend>
+            <div>
+                {{ form.csrf_token }}
+            </div>
+            <div>
+                {{ form.username.label() }}
+                {{ form.username }}
+            </div>
+            <div>
+                {{ form.e_mail.label() }}
+                {{ form.e_mail }}
+            </div>
+            <div>
+                {{ form.password.label() }}
+                {{ form.password }}
+            </div>
+            <div>
+                {{ form.confirm_password.label() }}
+                {{ form.confirm_password }}
+            </div>
+        </fieldset>
+        <div>
+            {{ form.submit }}
+        </div>
+    </form>
+</body>
+</html>
