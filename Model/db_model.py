@@ -1,30 +1,66 @@
 from application import db
 
 
-class Cooler (db.Model):
-    __tablename__ = 'cooler'
+class Users(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    item = db.Column(db.Integer, db.ForeignKey('items.id'))
-    is_good = db.Column(db.Boolean)
-    item_opened = db.Column(db.Boolean)
+    username = db.Column(db.String, unique=True)
+    email = db.Column(db.String)
+    password = db.Column(db.String)
+    fridge_id = db.Column(db.Integer, db.ForeignKey('fridge.id'))
+    fridge = db.relationship('Fridge', back_populates='users')
 
-    items = db.relationship('Items', back_populates='cooler')
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
 
-    def __repr__(self):
-        return f'Im a Cooler'
-
-
-class Fridge (db.Model):
+class Fridge(db.Model):
     __tablename__ = 'fridge'
     id = db.Column(db.Integer, primary_key=True)
-    item = db.Column(db.Integer, db.ForeignKey('items.id'))
-    item_opened = db.Column(db.Boolean)
-    is_good = db.Column(db.Boolean)
+    name = db.Column(db.String)
+    users = db.relationship('Users', back_populates='fridge')
 
-    items = db.relationship('Items', back_populates='cooler')
+    inFridge = db.relationship('InFridge', back_populates='fridge')
+    openedItem = db.relationship('OpenedItem', back_populates='fridge')
 
-    def __repr__(self):
-        return f'Im a Fridge'
+
+class InFridge(db.Model):
+    __tablename__ = 'inFridge'
+    id = db.Column(db.Integer, primary_key=True)
+    fridge_id = db.Column(db.Integer, db.ForeignKey('fridge.id'))
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+    quantity = db.Column(db.Integer)
+    expired_date = db.Column(db.DateTime)
+    opened = db.Column(db.Integer)
+
+    fridge = db.relationship('Fridge', back_populates='inFridge')
+    items = db.relationship('Items', back_populates='inFridge')
+
+
+class OpenedItem(db.Model):
+    __tablename__ = 'openedItem'
+    id = db.Column(db.Integer, primary_key=True)
+    when = db.Column(db.DateTime)
+    fridge_id = db.Column(db.Integer, db.ForeignKey('fridge.id'))
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
+
+    items = db.relationship('Items', back_populates='openedItem')
+    fridge = db.relationship('Fridge', back_populates='openedItem')
+
+
+class Items(db.Model):
+
+    __tablename__ = 'items'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+    expired_opened = db.Column(db.Integer)
+    do_i_need_it = db.Column(db.Integer)
+    category = db.Column(db.Integer, db.ForeignKey('itemsCategories.id'))
+    itemsCategories = db.relationship('ItemsCategories', back_populates='items')
+    openedItem = db.relationship('OpenedItem', back_populates='items')
+    inFridge = db.relationship('InFridge', back_populates='items')
+
 
 
 class ItemsCategories(db.Model):
@@ -32,17 +68,3 @@ class ItemsCategories(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     items = db.relationship('Items', back_populates='itemsCategories')
-
-
-class Items(db.Model):
-    __tablename__ = 'items'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True, nullable=False)
-    expired_opened = db.Column(db.Integer)
-    use_by = db.Column(db.DateTime)
-    do_i_need_it = db.Column(db.Integer)
-    category = db.Column(db.Integer, db.ForeignKey('itemsCategories.id'))
-    itemCategories = db.relationship('ItemCategories', back_populates='items')
-    fridge = db.relationship('Fridge', back_populates='items')
-    cooler = db.relationship('Cooler', back_populates='items')
-

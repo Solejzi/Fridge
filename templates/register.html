@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+
+</head>
+<body>
+
+    <form method="POST"  action="">
+        {{ form.csrf_token }}
+        <fieldset>
+
+            <legend>REGISTER</legend>
+
+            <div>
+                {{ form.username.label() }}
+                {{ form.username }}
+            </div>
+            <div>
+                {{ form.email.label() }}
+                {{ form.email }}
+            </div>
+            <div>
+                {{ form.password.label() }}
+                {{ form.password }}
+            </div>
+            <div>
+                {{ form.confirm_password.label() }}
+                {{ form.confirm_password }}
+            </div>
+        </fieldset>
+        <div>
+            {{ form.submit }}
+        </div>
+    </form>
+    <a href="{{ url_for ('welcome_view') }}"><button>Back to Login screen</button></a>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
